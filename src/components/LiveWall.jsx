@@ -42,16 +42,24 @@ function LiveWall() {
   return (
     <div className="islamic-floral-bg min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden border-[12px] border-double border-ceremony-gold/20">
       
-      {/* Updated Header Title */}
-      <div className="absolute top-10 text-center z-20">
-        <div className="text-ceremony-gold text-2xl mb-2 opacity-50 font-arabic">﷽</div>
-        <h1 className="font-serif text-4xl md:text-6xl text-ceremony-emerald mb-2 tracking-tight">
-          Hafsa Tasnim Naming Ceremony
+      {/* Header with 3x larger Bismillah and Updated Title */}
+      <div className="absolute top-8 text-center z-20 w-full px-4">
+        <div className="text-ceremony-gold text-7xl md:text-8xl mb-6 opacity-60 font-arabic drop-shadow-sm">
+          ﷽
+        </div>
+        <h1 className="font-serif text-4xl md:text-7xl text-ceremony-emerald mb-2 tracking-tight drop-shadow-sm">
+          Hafsa Tasnim's Naming Ceremony
         </h1>
-        <div className="text-ceremony-gold tracking-[0.5em] text-xs uppercase opacity-60">May 17, 2026</div>
+        <div className="flex justify-center items-center gap-4 mt-2">
+          <div className="h-[1px] w-20 bg-ceremony-gold opacity-30"></div>
+          <div className="text-ceremony-gold tracking-[0.4em] text-sm uppercase opacity-60 font-light">
+            May 17, 2026
+          </div>
+          <div className="h-[1px] w-20 bg-ceremony-gold opacity-30"></div>
+        </div>
       </div>
 
-      <div className="relative w-full max-w-6xl flex items-center justify-center">
+      <div className="relative w-full max-w-6xl flex items-center justify-center mt-20">
         <div 
           key={currentPost.id} 
           className="w-full flex flex-col md:flex-row items-center bg-white/95 rounded-[40px] shadow-2xl overflow-hidden border-2 border-ceremony-gold/10 animate-fade-in-up"
@@ -59,7 +67,7 @@ function LiveWall() {
           
           {currentPost.imageUrl && (
             <div className="w-full md:w-1/2 p-6 md:p-12 flex justify-center">
-              <div className="islamic-arch h-[55vh] w-full max-w-sm overflow-hidden shadow-inner">
+              <div className="islamic-arch h-[50vh] w-full max-w-sm overflow-hidden shadow-inner border border-ceremony-gold/5">
                 <img 
                   src={currentPost.imageUrl} 
                   className="w-full h-full object-cover" 
@@ -71,13 +79,11 @@ function LiveWall() {
 
           <div className={`p-12 md:p-20 flex items-center justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
             <div className="slideshow-message-block">
-              {/* Message without Quotes */}
               <p className="font-serif text-4xl md:text-6xl text-ceremony-emerald leading-tight italic font-medium px-4">
                 {currentPost.message}
               </p>
               
-              {/* Updated Separator: ~~~~~~ */}
-              <div className="mt-10 text-ceremony-gold text-3xl tracking-widest opacity-40 font-light">
+              <div className="mt-10 text-ceremony-gold text-4xl tracking-widest opacity-30 font-light">
                 ~~~~~~
               </div>
             </div>

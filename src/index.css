@@ -22,8 +22,7 @@ body {
 }
 
 .islamic-arch {
-  /* Keeps the mosque-window silhouette */
-  border-radius: 50% 50% 15px 15px / 20% 20% 15px 15px;
+  border-radius: 50% 50% 20px 20px / 35% 35% 20px 20px;
 }
 
 .slideshow-message-block {
@@ -47,4 +46,9 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.font-arabic {
+  /* Ensuring the Bismillah renders clearly */
+  font-family: "Amiri", "Traditional Arabic", serif;
 }
