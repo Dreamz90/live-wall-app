@@ -93,7 +93,7 @@ function LiveWall() {
                 {currentPost.message}
               </p>
               <div className="mt-10 text-ceremony-gold text-5xl tracking-[0.5em] opacity-50">
-                ~~~~~~
+                ***
               </div>
               {currentPost.guestName && (
                 <p className="mt-8 text-ceremony-gold uppercase tracking-[0.2em] font-bold text-sm">
