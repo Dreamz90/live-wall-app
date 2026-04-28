@@ -13,3 +13,5 @@ import { db } from "../firebase";
     </p>
   </div>
 </div>
+
+export default LiveWall;
