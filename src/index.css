@@ -13,35 +13,49 @@ body {
   padding: 0;
   background-color: var(--ceremony-cream);
   font-family: 'Inter', system-ui, sans-serif;
-  overflow-x: hidden;
 }
 
-/* The Main Page Background */
+/* Page Background with Subtle Pattern */
 .islamic-floral-bg {
   background-color: var(--ceremony-cream);
-  /* Intricate geometric pattern */
-  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 40 L50 30 L40 20 L30 30 Z M0 0 L10 10 L0 20 L-10 10 Z M80 0 L90 10 L80 20 L70 10 Z' fill='%23c5a059' fill-opacity='0.04'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30 L35 25 L30 20 L25 25 Z M0 0 L5 5 L0 10 L-5 5 Z M60 0 L65 5 L60 10 L55 5 Z' fill='%23c5a059' fill-opacity='0.05'/%3E%3C/svg%3E");
   background-attachment: fixed;
-  position: relative;
 }
 
-/* Islamic Arch Shape for Photos */
+/* The Mosque Window (Arch) Frame */
 .islamic-arch {
-  /* Creates the curved "Mirhab" mosque window look */
-  border-radius: 50% 50% 10px 10px / 25% 25% 10px 10px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.5s ease;
+  border-radius: 50% 50% 20px 20px / 30% 30% 20px 20px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
 }
 
-/* Custom Animation for the Slideshow Cards */
+/* Centered Quote/Message Block Fix */
+.slideshow-message-block {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.message-quote {
+  font-family: serif;
+  font-size: 7rem;
+  color: var(--ceremony-gold);
+  opacity: 0.25;
+  line-height: 0.1;
+  user-select: none;
+}
+
+/* Smooth Entrance Animation */
 .animate-fade-in-up {
-  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(40px) scale(0.98);
+    transform: translateY(50px) scale(0.95);
   }
   to {
     opacity: 1;
@@ -49,28 +63,8 @@ body {
   }
 }
 
-/* Glassmorphism Effect for the Cards */
-.bg-white\/95 {
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
-}
-
-/* Elegant Scrollbar (for your laptop preview) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--ceremony-cream);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--ceremony-gold);
-  border-radius: 10px;
-}
-
-/* Utility for typography if you haven't imported a specific font */
-.font-arabic {
-  /* This falls back to system fonts that handle Arabic beautifully */
-  font-family: "Amiri", "Scheherazade New", serif;
+/* Utility classes for better font rendering */
+p {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }

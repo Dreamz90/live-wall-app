@@ -6,7 +6,7 @@ function LiveWall() {
   const [posts, setPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // 1. Fetch data from Firebase
+  // 1. Listen to Firestore for real-time updates
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -19,15 +19,14 @@ function LiveWall() {
     return () => unsubscribe();
   }, []);
 
-  // 2. Automatic Slideshow Timer
+  // 2. Slideshow Timer: Rotate every 5 seconds
   useEffect(() => {
     if (posts.length > 0) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) => 
           prevIndex === posts.length - 1 ? 0 : prevIndex + 1
         );
-      }, 5000); // Change slide every 5 seconds
-
+      }, 5000); 
       return () => clearInterval(interval);
     }
   }, [posts]);
@@ -35,7 +34,10 @@ function LiveWall() {
   if (posts.length === 0) {
     return (
       <div className="islamic-floral-bg min-h-screen flex items-center justify-center">
-        <p className="text-ceremony-gold font-serif text-3xl animate-pulse">Waiting for blessings...</p>
+        <div className="text-center">
+          <div className="animate-spin h-12 w-12 border-4 border-ceremony-gold border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-ceremony-gold font-serif text-3xl animate-pulse">Waiting for blessings...</p>
+        </div>
       </div>
     );
   }
@@ -43,28 +45,28 @@ function LiveWall() {
   const currentPost = posts[currentIndex];
 
   return (
-    <div className="islamic-floral-bg min-h-screen flex flex-col items-center justify-center p-10 overflow-hidden">
+    <div className="islamic-floral-bg min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden border-[12px] border-double border-ceremony-gold/20">
       
-      {/* Fixed Header */}
-      <div className="absolute top-10 text-center z-20">
-        <div className="text-ceremony-gold text-2xl mb-2 opacity-60">﷽</div>
-        <h1 className="font-serif text-4xl text-ceremony-emerald uppercase tracking-[0.3em]">
+      {/* Permanent Header */}
+      <div className="absolute top-8 text-center z-20">
+        <div className="text-ceremony-gold text-3xl mb-2 opacity-50">✨ ﷽ ✨</div>
+        <h1 className="font-serif text-5xl md:text-7xl text-ceremony-emerald mb-2 tracking-tight">
           Hafsa Tasnim
         </h1>
+        <div className="h-[1px] w-32 bg-ceremony-gold mx-auto opacity-40"></div>
       </div>
 
-      {/* Main Slideshow Container */}
-      <div className="relative w-full max-w-5xl h-[70vh] flex items-center justify-center">
-        {/* Animated Card */}
+      {/* Slideshow Display Area */}
+      <div className="relative w-full max-w-6xl flex items-center justify-center">
         <div 
           key={currentPost.id} 
-          className="w-full flex flex-col md:flex-row items-center bg-white/95 rounded-[40px] shadow-2xl overflow-hidden border-4 border-ceremony-gold/20 animate-fade-in-up"
+          className="w-full flex flex-col md:flex-row items-center bg-white/95 rounded-[40px] shadow-2xl overflow-hidden border-2 border-ceremony-gold/10 animate-fade-in-up"
         >
           
-          {/* Photo Section (If exists) */}
+          {/* Photo Section (Only if imageUrl exists) */}
           {currentPost.imageUrl && (
-            <div className="w-full md:w-1/2 h-full p-6">
-              <div className="islamic-arch h-[50vh] overflow-hidden border-2 border-ceremony-gold/10">
+            <div className="w-full md:w-1/2 p-6 md:p-10 flex justify-center">
+              <div className="islamic-arch h-[50vh] w-full max-w-sm overflow-hidden border-4 border-ceremony-gold/10">
                 <img 
                   src={currentPost.imageUrl} 
                   className="w-full h-full object-cover" 
@@ -74,27 +76,37 @@ function LiveWall() {
             </div>
           )}
 
-          {/* Message Section */}
-          <div className={`p-12 text-center flex flex-col justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
-            <span className="text-6xl text-ceremony-gold opacity-30 font-serif">“</span>
-            <p className="font-serif text-3xl md:text-5xl text-ceremony-emerald leading-snug italic px-4">
-              {currentPost.message}
-            </p>
-            <span className="text-6xl text-ceremony-gold opacity-30 font-serif text-right mt-2">”</span>
-            
-            {/* Ornament Divider */}
-            <div className="mt-8 text-ceremony-gold text-2xl">❈ ❈ ❈</div>
+          {/* Centered Message Section */}
+          <div className={`p-10 md:p-16 flex items-center justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
+            <div className="slideshow-message-block">
+              <span className="message-quote">“</span>
+              
+              <p className="font-serif text-3xl md:text-5xl text-ceremony-emerald leading-tight italic font-medium">
+                {currentPost.message}
+              </p>
+              
+              <span className="message-quote mt-4">”</span>
+              
+              {/* Optional Guest Name Divider */}
+              <div className="flex items-center gap-3 mt-8">
+                <span className="h-[1px] w-8 bg-ceremony-gold/40"></span>
+                <span className="text-ceremony-gold text-sm tracking-[0.3em] uppercase font-bold">
+                  Blessings
+                </span>
+                <span className="h-[1px] w-8 bg-ceremony-gold/40"></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Slide Indicator (Footer) */}
-      <div className="absolute bottom-10 flex gap-2">
-        {posts.map((_, idx) => (
+      {/* Progress Dots */}
+      <div className="absolute bottom-8 flex gap-3">
+        {posts.slice(0, 15).map((_, idx) => ( // Showing max 15 dots to avoid clutter
           <div 
             key={idx}
-            className={`h-2 w-2 rounded-full transition-all duration-500 ${
-              idx === currentIndex ? "bg-ceremony-gold w-8" : "bg-ceremony-gold/20"
+            className={`h-2 rounded-full transition-all duration-700 ${
+              idx === currentIndex ? "bg-ceremony-gold w-10" : "bg-ceremony-gold/20 w-2"
             }`}
           />
         ))}
