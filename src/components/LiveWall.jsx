@@ -4,7 +4,9 @@ import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 function LiveWall() {
   const [posts, setPosts] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
+  // 1. Fetch data from Firebase
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -17,59 +19,84 @@ function LiveWall() {
     return () => unsubscribe();
   }, []);
 
+  // 2. Automatic Slideshow Timer
+  useEffect(() => {
+    if (posts.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => 
+          prevIndex === posts.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 5000); // Change slide every 5 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [posts]);
+
+  if (posts.length === 0) {
+    return (
+      <div className="islamic-floral-bg min-h-screen flex items-center justify-center">
+        <p className="text-ceremony-gold font-serif text-3xl animate-pulse">Waiting for blessings...</p>
+      </div>
+    );
+  }
+
+  const currentPost = posts[currentIndex];
+
   return (
-    <div className="islamic-floral-bg min-h-screen p-6 md:p-10 border-[16px] border-double border-ceremony-gold/20">
+    <div className="islamic-floral-bg min-h-screen flex flex-col items-center justify-center p-10 overflow-hidden">
       
-      {/* Ornate Header */}
-      <header className="text-center mb-16 relative">
-        <div className="text-ceremony-gold text-4xl mb-4 opacity-40">✨ ﷽ ✨</div>
-        <h1 className="font-serif text-6xl md:text-8xl text-ceremony-emerald mb-4 tracking-tighter">
+      {/* Fixed Header */}
+      <div className="absolute top-10 text-center z-20">
+        <div className="text-ceremony-gold text-2xl mb-2 opacity-60">﷽</div>
+        <h1 className="font-serif text-4xl text-ceremony-emerald uppercase tracking-[0.3em]">
           Hafsa Tasnim
         </h1>
-        <h2 className="font-serif text-xl md:text-2xl text-ceremony-gold uppercase tracking-[0.4em] font-light">
-          Naming Ceremony • May 17, 2026
-        </h2>
-        <div className="flex justify-center mt-6">
-          <div className="h-[2px] w-24 bg-ceremony-gold"></div>
-          <div className="mx-4 text-ceremony-gold -mt-2">❈</div>
-          <div className="h-[2px] w-24 bg-ceremony-gold"></div>
-        </div>
-      </header>
+      </div>
 
-      {/* Grid with 5 columns for high-capacity viewing */}
-      <div className="columns-1 sm:columns-2 lg:columns-4 xl:columns-5 gap-6 space-y-6">
-        {posts.map((post) => (
-          <div 
-            key={post.id} 
-            className="break-inside-avoid bg-white/95 border-t-4 border-ceremony-gold rounded-b-2xl shadow-xl transition-all duration-700 hover:-translate-y-2"
-          >
-            {post.imageUrl ? (
-              /* PHOTO POST: Arch Shape */
-              <div className="p-2">
-                <div className="islamic-arch overflow-hidden bg-ceremony-cream border-2 border-ceremony-gold/10">
-                  <img 
-                    src={post.imageUrl} 
-                    className="w-full h-auto block hover:scale-110 transition-transform duration-1000"
-                    alt="Blessing"
-                  />
-                </div>
-                <div className="p-4 text-center">
-                  <p className="font-serif italic text-lg text-ceremony-emerald italic leading-tight">
-                    "{post.message}"
-                  </p>
-                </div>
+      {/* Main Slideshow Container */}
+      <div className="relative w-full max-w-5xl h-[70vh] flex items-center justify-center">
+        {/* Animated Card */}
+        <div 
+          key={currentPost.id} 
+          className="w-full flex flex-col md:flex-row items-center bg-white/95 rounded-[40px] shadow-2xl overflow-hidden border-4 border-ceremony-gold/20 animate-fade-in-up"
+        >
+          
+          {/* Photo Section (If exists) */}
+          {currentPost.imageUrl && (
+            <div className="w-full md:w-1/2 h-full p-6">
+              <div className="islamic-arch h-[50vh] overflow-hidden border-2 border-ceremony-gold/10">
+                <img 
+                  src={currentPost.imageUrl} 
+                  className="w-full h-full object-cover" 
+                  alt="Ceremony Moment"
+                />
               </div>
-            ) : (
-              /* TEXT ONLY: Decorative Floral Frame */
-              <div className="p-8 text-center min-h-[220px] flex flex-col items-center justify-center border-4 border-double border-ceremony-gold/30 m-2 rounded-xl">
-                <div className="text-ceremony-gold text-2xl mb-2">❦</div>
-                <p className="font-serif text-2xl text-ceremony-emerald font-semibold leading-relaxed">
-                  {post.message}
-                </p>
-                <div className="text-ceremony-gold text-2xl mt-2">❦</div>
-              </div>
-            )}
+            </div>
+          )}
+
+          {/* Message Section */}
+          <div className={`p-12 text-center flex flex-col justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
+            <span className="text-6xl text-ceremony-gold opacity-30 font-serif">“</span>
+            <p className="font-serif text-3xl md:text-5xl text-ceremony-emerald leading-snug italic px-4">
+              {currentPost.message}
+            </p>
+            <span className="text-6xl text-ceremony-gold opacity-30 font-serif text-right mt-2">”</span>
+            
+            {/* Ornament Divider */}
+            <div className="mt-8 text-ceremony-gold text-2xl">❈ ❈ ❈</div>
           </div>
+        </div>
+      </div>
+
+      {/* Slide Indicator (Footer) */}
+      <div className="absolute bottom-10 flex gap-2">
+        {posts.map((_, idx) => (
+          <div 
+            key={idx}
+            className={`h-2 w-2 rounded-full transition-all duration-500 ${
+              idx === currentIndex ? "bg-ceremony-gold w-8" : "bg-ceremony-gold/20"
+            }`}
+          />
         ))}
       </div>
     </div>
