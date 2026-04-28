@@ -51,14 +51,14 @@ function LiveWall() {
             {/* Image Container */}
             <div className="relative overflow-hidden rounded-lg h-80 bg-gray-100">
               <img 
-                src={post.fileUrl} 
+                src={post.imageUrl} 
                 alt="Ceremony Guest Upload" 
                 className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 loading="lazy"
               />
               {/* The Image */}
               <img 
-                src={post.fileUrl} 
+                src={post.imageUrl} 
                 alt="Upload" 
                 className={`w-full h-full object-cover ${post.loadError ? 'hidden' : 'block'}`}
                 onError={() => handleImageError(post.id)}
@@ -70,7 +70,7 @@ function LiveWall() {
                   <span className="text-red-500 text-5xl mb-2">⚠️</span>
                   <p className="text-red-700 font-bold">Image Failed to Load</p>
                   <p className="text-xs text-gray-500 mt-2 break-all">
-                    Source: {post.fileUrl ? post.fileUrl.substring(0, 50) + "..." : "URL Missing"}
+                    Source: {post.imageUrl ? post.imageUrl.substring(0, 50) + "..." : "URL Missing"}
                   </p>
                   <p className="text-[10px] text-red-400 mt-1 uppercase tracking-tighter">
                     Check Firebase Storage Rules or CORS
