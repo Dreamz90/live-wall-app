@@ -21,90 +21,83 @@ function LiveWall() {
   useEffect(() => {
     if (posts.length > 0) {
       const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => 
-          prevIndex === posts.length - 1 ? 0 : prevIndex + 1
-        );
-      }, 5000); 
+        setCurrentIndex((prev) => (prev === posts.length - 1 ? 0 : prev + 1));
+      }, 6000); // 6 seconds for better readability on big screens
       return () => clearInterval(interval);
     }
   }, [posts]);
 
-  if (posts.length === 0) {
-    return (
-      <div className="islamic-floral-bg min-h-screen flex items-center justify-center">
-        <p className="text-ceremony-gold font-serif text-3xl animate-pulse">Initializing Wall...</p>
-      </div>
-    );
-  }
+  if (posts.length === 0) return null;
 
   const currentPost = posts[currentIndex];
 
   return (
-    <div className="islamic-floral-bg min-h-screen flex flex-col items-center justify-center p-6 overflow-hidden border-[12px] border-double border-ceremony-gold/20">
+    <div className="relative min-h-screen w-full bg-ceremony-cream overflow-hidden flex flex-col items-center justify-center">
       
-      {/* Header with Full Arabic Basmala */}
-      <div className="absolute top-6 text-center z-20 w-full px-4">
-        {/* Full Basmala - Increased size and adjusted tracking */}
-        <div className="text-ceremony-gold text-5xl md:text-7xl mb-4 opacity-80 font-arabic leading-relaxed drop-shadow-md">
-          بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
-        </div>
-        
-        <h1 className="font-serif text-3xl md:text-6xl text-ceremony-emerald mb-2 tracking-tight drop-shadow-sm">
-          Hafsa Tasnim's Naming Ceremony
-        </h1>
-        
-        <div className="flex justify-center items-center gap-4 mt-1">
-          <div className="h-[1px] w-24 bg-ceremony-gold opacity-20"></div>
-          <div className="text-ceremony-gold tracking-[0.4em] text-xs uppercase opacity-60 font-light">
-            May 17, 2026
+      {/* 1. THE BACKGROUND COLLAGE (Fills the entire screen) */}
+      <div className="absolute inset-0 grid grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 opacity-10 grayscale pointer-events-none p-2">
+        {posts.map((post, i) => (
+          <div key={`bg-${i}`} className="h-40 bg-white border border-ceremony-gold/20 overflow-hidden rounded-sm">
+            {post.imageUrl ? (
+              <img src={post.imageUrl} className="w-full h-full object-cover" alt="" />
+            ) : (
+              <div className="p-2 text-[8px] font-serif text-ceremony-emerald italic overflow-hidden">
+                {post.message}
+              </div>
+            )}
           </div>
-          <div className="h-[1px] w-24 bg-ceremony-gold opacity-20"></div>
-        </div>
+        ))}
       </div>
 
-      {/* Main Container - Adjusted margin top to prevent overlap with larger header */}
-      <div className="relative w-full max-w-6xl flex items-center justify-center mt-28">
+      {/* 2. THE TOP HEADER (Floating over collage) */}
+      <div className="relative z-30 text-center mb-12">
+        <div className="text-ceremony-gold text-5xl md:text-7xl mb-4 font-arabic drop-shadow-lg">
+          بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+        </div>
+        <h1 className="font-serif text-4xl md:text-6xl text-ceremony-emerald tracking-tight drop-shadow-md bg-ceremony-cream/80 px-6 py-2 rounded-full inline-block">
+          Hafsa Tasnim's Naming Ceremony
+        </h1>
+      </div>
+
+      {/* 3. THE CENTER STAGE CARD */}
+      <div className="relative z-20 w-full max-w-6xl px-6">
         <div 
           key={currentPost.id} 
-          className="w-full flex flex-col md:flex-row items-center bg-white/95 rounded-[40px] shadow-2xl overflow-hidden border-2 border-ceremony-gold/10 animate-fade-in-up"
+          className="flex flex-col md:flex-row items-center bg-white shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] rounded-[40px] overflow-hidden border-b-8 border-ceremony-gold animate-zoom-in"
         >
-          
+          {/* Photo Section */}
           {currentPost.imageUrl && (
-            <div className="w-full md:w-1/2 p-6 md:p-12 flex justify-center">
-              <div className="islamic-arch h-[45vh] w-full max-w-sm overflow-hidden shadow-inner border border-ceremony-gold/5">
+            <div className="w-full md:w-1/2 p-8 md:p-12">
+              <div className="islamic-arch h-[55vh] w-full overflow-hidden shadow-2xl">
                 <img 
                   src={currentPost.imageUrl} 
                   className="w-full h-full object-cover" 
-                  alt="Ceremony Moment"
+                  alt="Feature"
                 />
               </div>
             </div>
           )}
 
-          <div className={`p-10 md:p-16 flex items-center justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
-            <div className="slideshow-message-block">
-              <p className="font-serif text-3xl md:text-5xl text-ceremony-emerald leading-tight italic font-medium px-4">
-                {currentPost.message}
-              </p>
-              
-              <div className="mt-8 text-ceremony-gold text-4xl tracking-widest opacity-30 font-light">
-                ~~~~~~
-              </div>
+          {/* Message Section */}
+          <div className={`p-12 md:p-20 text-center flex flex-col items-center justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
+            <p className="font-serif text-4xl md:text-6xl text-ceremony-emerald leading-tight italic font-medium">
+              {currentPost.message}
+            </p>
+            <div className="mt-12 text-ceremony-gold text-5xl tracking-[0.5em] opacity-40">
+              ~~~~~~
             </div>
+            {currentPost.guestName && (
+              <p className="mt-8 text-ceremony-gold uppercase tracking-widest font-bold">
+                — {currentPost.guestName}
+              </p>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Slide Navigation Dots */}
-      <div className="absolute bottom-8 flex gap-3">
-        {posts.slice(0, 15).map((_, idx) => (
-          <div 
-            key={idx}
-            className={`h-1.5 rounded-full transition-all duration-700 ${
-              idx === currentIndex ? "bg-ceremony-gold w-10" : "bg-ceremony-gold/10 w-2"
-            }`}
-          />
-        ))}
+      {/* 4. DATE FOOTER */}
+      <div className="relative z-30 mt-12 bg-ceremony-emerald text-ceremony-cream px-8 py-2 rounded-full font-serif tracking-[0.3em] text-sm">
+        MAY 17, 2026
       </div>
     </div>
   );
