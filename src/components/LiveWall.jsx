@@ -6,11 +6,10 @@ function LiveWall() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // 1. Reference the 'posts' collection in Firestore
+    // Reference the 'posts' collection, ordered by newest first
     const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
 
-    // 2. Set up a real-time listener (OnSnapshot)
-    // This is the "magic" - as soon as a guest uploads, it appears here!
+    // Real-time listener: Updates automatically when guests upload
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const postsData = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -19,57 +18,63 @@ function LiveWall() {
       setPosts(postsData);
     });
 
-    // Cleanup listener on unmount
     return () => unsubscribe();
   }, []);
 
   return (
     <div className="islamic-floral-bg min-h-screen p-8">
-      {/* Header: Update this with your baby's name */}
+      {/* Header Section */}
       <header className="text-center mb-12">
-        <h1 className="font-arabic text-6xl text-ceremony-gold mb-2">Bismillah</h1>
-        <h2 className="font-serif text-4xl text-ceremony-green uppercase tracking-widest">
-          Naming Ceremony Moments
+        <h1 className="font-arabic text-7xl text-ceremony-gold mb-2">Bismillah</h1>
+        <h2 className="font-serif text-4xl text-ceremony-green uppercase tracking-widest font-bold">
+          Our Beloved Daughter's Naming Ceremony
         </h2>
-        <div className="w-32 h-1 bg-ceremony-gold mx-auto mt-4 rounded-full"></div>
+        <div className="w-48 h-1.5 bg-ceremony-gold mx-auto mt-4 rounded-full opacity-60"></div>
       </header>
 
-      {/* The Live Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Photo & Message Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {posts.map((post) => (
-          <div key={post.id} className="ceremony-card p-3 animate-fade-in">
-            {post.type === 'video' ? (
-              <video 
-                src={post.fileUrl} 
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
-                className="w-full h-72 object-cover rounded shadow-inner"
-              />
-            ) : (
+          <div 
+            key={post.id} 
+            className="bg-white/80 backdrop-blur-sm border-2 border-ceremony-gold p-4 rounded-xl shadow-2xl animate-fade-in"
+          >
+            {/* Image Container */}
+            <div className="relative overflow-hidden rounded-lg h-80 bg-gray-100">
               <img 
                 src={post.fileUrl} 
-                alt="Ceremony Moment" 
-                className="w-full h-72 object-cover rounded" 
+                alt="Ceremony Guest Upload" 
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                loading="lazy"
               />
-            )}
+            </div>
             
-            {/* The Message Area */}
-            <div className="mt-4 text-center px-2">
-              <p className="font-serif italic text-xl text-gray-800">
-                "{post.message}"
+            {/* Message Area */}
+            <div className="mt-6 text-center">
+              <div className="text-ceremony-gold text-2xl mb-2">❝</div>
+              <p className="font-serif italic text-2xl text-gray-800 px-4 leading-relaxed">
+                {post.message}
               </p>
-              <div className="mt-2 text-ceremony-gold opacity-50">✦ ✦ ✦</div>
+              <div className="text-ceremony-gold text-2xl mt-2">❞</div>
+              
+              {/* Optional: Guest Name if you added it to your form */}
+              {post.guestName && (
+                <p className="mt-4 font-serif font-bold text-ceremony-green">
+                  — {post.guestName}
+                </p>
+              )}
             </div>
           </div>
         ))}
       </div>
 
+      {/* Empty State */}
       {posts.length === 0 && (
-        <p className="text-center text-ceremony-gold font-serif mt-20 text-2xl">
-          Waiting for the first moments to be shared...
-        </p>
+        <div className="flex flex-col items-center justify-center mt-32">
+          <p className="text-ceremony-gold font-serif text-3xl animate-pulse">
+            Waiting for your beautiful photos and wishes...
+          </p>
+        </div>
       )}
     </div>
   );
