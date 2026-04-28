@@ -18,70 +18,55 @@ function LiveWall() {
   }, []);
 
   return (
-    <div className="islamic-floral-bg min-h-screen p-4 md:p-8">
-      {/* Header */}
-      <header className="text-center mb-12">
-        <h1 className="font-arabic text-6xl text-ceremony-gold mb-2">Bismillah</h1>
-        <h2 className="font-serif text-2xl md:text-4xl text-ceremony-green uppercase tracking-widest font-bold">
-          Blessings & Memories
+    <div className="islamic-floral-bg min-h-screen p-6 md:p-10 border-[16px] border-double border-ceremony-gold/20">
+      
+      {/* Ornate Header */}
+      <header className="text-center mb-16 relative">
+        <div className="text-ceremony-gold text-4xl mb-4 opacity-40">✨ ﷽ ✨</div>
+        <h1 className="font-serif text-6xl md:text-8xl text-ceremony-emerald mb-4 tracking-tighter">
+          Hafsa Tasnim
+        </h1>
+        <h2 className="font-serif text-xl md:text-2xl text-ceremony-gold uppercase tracking-[0.4em] font-light">
+          Naming Ceremony • May 17, 2026
         </h2>
+        <div className="flex justify-center mt-6">
+          <div className="h-[2px] w-24 bg-ceremony-gold"></div>
+          <div className="mx-4 text-ceremony-gold -mt-2">❈</div>
+          <div className="h-[2px] w-24 bg-ceremony-gold"></div>
+        </div>
       </header>
 
-      {/* Optimized Grid: 5 columns on large screens to keep cards small */}
-      <div className="columns-1 sm:columns-2 lg:columns-4 xl:columns-5 gap-4 space-y-4">
+      {/* Grid with 5 columns for high-capacity viewing */}
+      <div className="columns-1 sm:columns-2 lg:columns-4 xl:columns-5 gap-6 space-y-6">
         {posts.map((post) => (
           <div 
             key={post.id} 
-            className="break-inside-avoid bg-white/90 backdrop-blur-sm border border-ceremony-gold/20 rounded-xl shadow-lg overflow-hidden animate-fade-in"
+            className="break-inside-avoid bg-white/95 border-t-4 border-ceremony-gold rounded-b-2xl shadow-xl transition-all duration-700 hover:-translate-y-2"
           >
             {post.imageUrl ? (
-              /* CASE 1: POST WITH PHOTO */
-              <>
-                <div className="relative overflow-hidden bg-gray-100">
+              /* PHOTO POST: Arch Shape */
+              <div className="p-2">
+                <div className="islamic-arch overflow-hidden bg-ceremony-cream border-2 border-ceremony-gold/10">
                   <img 
                     src={post.imageUrl} 
-                    alt="Guest Photo" 
-                    className="w-full h-auto block"
-                    loading="lazy"
+                    className="w-full h-auto block hover:scale-110 transition-transform duration-1000"
+                    alt="Blessing"
                   />
                 </div>
                 <div className="p-4 text-center">
-                  <p className="font-serif italic text-lg text-gray-800 leading-snug">
+                  <p className="font-serif italic text-lg text-ceremony-emerald italic leading-tight">
                     "{post.message}"
                   </p>
                 </div>
-              </>
-            ) : (
-              /* CASE 2: MESSAGE ONLY (Floral Note Style) */
-              <div 
-                className="p-8 text-center min-h-[200px] flex flex-col items-center justify-center relative"
-                style={{
-                  backgroundImage: "url('/floral-bg.svg')",
-                  backgroundSize: "150px",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "repeat",
-                  backgroundColor: "#fffdf5"
-                }}
-              >
-                {/* Overlay to ensure text is readable over the pattern */}
-                <div className="absolute inset-0 bg-white/60"></div>
-                
-                <div className="relative z-10">
-                  <div className="text-ceremony-gold text-2xl mb-2">✦</div>
-                  <p className="font-serif italic text-xl md:text-2xl text-ceremony-green font-bold leading-tight">
-                    {post.message}
-                  </p>
-                  <div className="text-ceremony-gold text-2xl mt-2">✦</div>
-                </div>
               </div>
-            )}
-            
-            {/* Optional Guest Name tag if provided */}
-            {post.guestName && (
-              <div className="bg-ceremony-gold/10 py-2 text-center border-t border-ceremony-gold/10">
-                <p className="text-xs font-bold text-ceremony-gold uppercase tracking-tighter">
-                  From: {post.guestName}
+            ) : (
+              /* TEXT ONLY: Decorative Floral Frame */
+              <div className="p-8 text-center min-h-[220px] flex flex-col items-center justify-center border-4 border-double border-ceremony-gold/30 m-2 rounded-xl">
+                <div className="text-ceremony-gold text-2xl mb-2">❦</div>
+                <p className="font-serif text-2xl text-ceremony-emerald font-semibold leading-relaxed">
+                  {post.message}
                 </p>
+                <div className="text-ceremony-gold text-2xl mt-2">❦</div>
               </div>
             )}
           </div>
