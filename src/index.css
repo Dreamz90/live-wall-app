@@ -9,7 +9,7 @@ body {
 
 .islamic-floral-bg {
   background-color: #FDFBF0; /* Cream/Paper color */
-  background-image: url('./assets/floral-bg.svg')
+  background-image: url('./assets/floral-bg.svg');
   background-repeat: repeat;
   background-size: 150px; /* Adjust size of the pattern */
 }
