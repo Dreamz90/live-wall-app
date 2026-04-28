@@ -1,3 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Georgia', serif; /* Serif fonts feel more formal/ceremonial */
+}
+
+.islamic-floral-bg {
+  background-color: #FDFBF0; /* Cream/Paper color */
+  background-image: url('./assets/floral-bg.svg');
+  background-repeat: repeat;
+  background-size: 150px; /* Adjust size of the pattern */
+}
+
+/* Custom Card Style for Photos/Videos */
+.ceremony-card {
+  @apply bg-white border-2 border-[#C5A059] rounded-lg shadow-xl overflow-hidden;
+  position: relative;
+}
+
+/* Gold Corner Accent */
+.ceremony-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-top: 3px solid #C5A059;
+  border-left: 3px solid #C5A059;
+}
+
 .islamic-container {
   /* Soft cream paper-like background */
   background-color: #FDFBF0;
