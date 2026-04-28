@@ -71,7 +71,7 @@ function LiveWall() {
               <div className="islamic-arch h-[55vh] w-full overflow-hidden shadow-2xl">
                 <img 
                   src={currentPost.imageUrl} 
-                  className="w-full h-full object-cover" 
+                  className="w-full h-full object-contain" 
                   alt="Feature"
                 />
               </div>
