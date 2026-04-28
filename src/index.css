@@ -2,39 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 1. Theme Variables */
 :root {
   --ceremony-gold: #c5a059;
   --ceremony-emerald: #064e3b;
   --ceremony-cream: #fdfbf0;
 }
 
-/* 2. Base Reset */
 body {
   margin: 0;
   padding: 0;
   background-color: var(--ceremony-cream);
-  font-family: 'Inter', serif;
-  -webkit-font-smoothing: antialiased;
-  overflow: hidden; /* Prevents scrollbars during the slideshow */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden; /* Important for clean projection */
 }
 
-/* 3. Islamic Architecture (The Center Stage Arch) */
-.islamic-arch {
-  /* Creates the signature Mosque Window silhouette */
-  border-radius: 50% 50% 20px 20px / 35% 35% 20px 20px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  background: white;
+/* Typography */
+.font-arabic {
+  font-family: "Amiri", "Traditional Arabic", serif;
 }
 
-/* 4. Cinematic "Center Stage" Animation */
+/* Cinematic Slide Transition */
 @keyframes zoomInBounce {
   0% {
     opacity: 0;
-    transform: scale(0.7) translateY(40px);
-  }
-  70% {
-    transform: scale(1.03) translateY(-5px);
+    transform: scale(0.85) translateY(30px);
   }
   100% {
     opacity: 1;
@@ -43,44 +34,23 @@ body {
 }
 
 .animate-zoom-in {
-  /* This specific timing makes the card "pop" into view elegantly */
   animation: zoomInBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* 5. Typography Enhancements */
-.font-arabic {
-  /* Optimized for the full Basmala rendering */
-  font-family: "Amiri", "Traditional Arabic", serif;
-  text-rendering: optimizeLegibility;
+/* Background Mosaic Styling */
+.grayscale {
+  filter: grayscale(100%) contrast(80%);
 }
 
-h1, p {
-  text-rendering: geometricPrecision;
-}
-
-/* 6. Utility Helper Classes */
+/* Helper Colors */
 .bg-ceremony-cream { background-color: var(--ceremony-cream); }
 .text-ceremony-emerald { color: var(--ceremony-emerald); }
 .text-ceremony-gold { color: var(--ceremony-gold); }
-.border-ceremony-gold { border-color: var(--ceremony-gold); }
+.bg-ceremony-emerald { background-color: var(--ceremony-emerald); }
+.text-ceremony-cream { color: var(--ceremony-cream); }
 
-/* 7. Background Collage Styling */
-/* This ensures the tiny background images don't distract from the center */
-.grayscale {
-  filter: grayscale(80%) contrast(90%);
-}
-
-.slideshow-message-block {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-/* Custom Scrollbar for Chrome/Safari (if any list overflow occurs) */
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+/* Ensure text is readable against the JPEG background */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
