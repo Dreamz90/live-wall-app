@@ -1,3 +1,5 @@
+// In src/components/LiveWall.jsx
+import { db } from "../firebase";
 // Example of a Photo Card with the Islamic Theme
 <div className="relative p-4 border-2 border-[#C5A059] bg-white shadow-xl rounded-sm">
   {/* Decorative corner element (Optional) */}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import imageCompression from 'browser-image-compression';
-import { db, storage } from './firebase'; // Your existing config
+import { db, storage } from "../firebase"; // The two dots '..' mean "go up one folder"
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
