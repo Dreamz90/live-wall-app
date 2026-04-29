@@ -47,7 +47,9 @@ function LiveWall() {
             {post.imageUrl ? (
               <img src={post.imageUrl} className="w-full h-full object-cover" alt="" />
             ) : (
-              <div className="p-2 text-[10px] font-serif text-ceremony-emerald italic leading-tight">{post.message}</div>
+              <div className="p-2 text-[10px] font-serif text-ceremony-emerald italic leading-tight">
+                {post.message}
+              </div>
             )}
           </div>
         ))}
@@ -63,28 +65,27 @@ function LiveWall() {
         </h1>
       </div>
 
-      {/* CENTER STAGE: FIXED ASPECT RATIO FRAME */}
-      <div className="relative z-20 w-full max-w-5xl px-6">
+      {/* CENTER STAGE */}
+      <div className="relative z-20 w-full max-w-screen-xl px-4">
         <div 
           key={currentPost.id} 
-          /* aspect-video (16:9) keeps the background image from ever cutting or stretching weirdly */
-          className="relative aspect-video w-full shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] rounded-[40px] overflow-hidden animate-zoom-in"
+          className="relative h-[70vh] w-full shadow-[0_50px_120px_-30px_rgba(0,0,0,0.3)] rounded-[40px] overflow-hidden animate-zoom-in"
           style={{
-            backgroundImage: "url('/frame-bg.jpg')",
+            backgroundImage: "url('./assets/frame-bg.jpg')",
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat'
           }}
         >
-          {/* CONTENT OVERLAY: Sits inside the fixed background */}
           <div className="absolute inset-0 flex flex-col md:flex-row items-center p-8 md:p-12">
             
-            {/* Photo Section */}
+            {/* Adaptive Photo Section */}
             {currentPost.imageUrl && (
               <div className="w-full md:w-1/2 h-full flex justify-center items-center p-4">
-                <div className="w-full h-full max-h-[40vh] overflow-hidden rounded-2xl shadow-xl border-4 border-white/80">
+                {/* Border hugs the image tightly */}
+                <div className="w-fit h-fit max-h-[80%] overflow-hidden rounded-2xl shadow-xl border-4 border-white/80">
                   <img 
                     src={currentPost.imageUrl} 
-                    className="w-full h-full object-contain bg-black/5" 
+                    className="max-h-[50vh] w-auto h-auto block object-contain bg-black/5" 
                     alt="Guest"
                   />
                 </div>
@@ -98,20 +99,16 @@ function LiveWall() {
                   {currentPost.message}
                 </p>
                 
-                <div className="mt-6 text-ceremony-gold text-2xl md:text-3xl opacity-80">
+                {currentPost.guestName && (
+                  <p className="mt-4 text-ceremony-gold uppercase tracking-widest font-bold text-xs md:text-sm">
+                    — {currentPost.guestName}
+                  </p>
+                )}
+
+                {/* Separator placed after message/name */}
+                <div className="mt-10 text-ceremony-gold text-3xl md:text-4xl tracking-widest opacity-80 font-light">
                   {selectedSeparator}
                 </div>
-
-                {currentPost.guestName && (
-                  <>
-                    <p className="mt-4 text-ceremony-gold uppercase tracking-widest font-bold text-xs md:text-sm">
-                      — {currentPost.guestName}
-                    </p>
-                    <div className="mt-4 text-ceremony-gold text-xl opacity-50">
-                      {selectedSeparator}
-                    </div>
-                  </>
-                )}
               </div>
             </div>
           </div>
@@ -119,7 +116,7 @@ function LiveWall() {
       </div>
 
       {/* FOOTER */}
-      <div className="relative z-30 mt-8 bg-ceremony-emerald text-ceremony-cream px-8 py-2 rounded-full font-serif tracking-[0.3em] text-[10px] uppercase shadow-xl">
+      <div className="relative z-30 mt-8 bg-ceremony-emerald text-ceremony-cream px-8 py-2 rounded-full font-serif tracking-[0.3em] text-[14px] uppercase shadow-xl">
         May 17, 2026
       </div>
     </div>
