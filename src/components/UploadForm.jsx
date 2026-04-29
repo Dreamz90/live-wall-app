@@ -9,7 +9,7 @@ function UploadForm() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState("");
-
+  
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -61,9 +61,10 @@ function UploadForm() {
 
     } catch (error) {
       console.error("Error:", error);
-      setStatus("Oops! Something went wrong. Please try again.");
+      setStatus("Oops! Something went wrong. Please try again."  + error.message);
     } finally {
       setUploading(false);
+      e.target.value = null;
     }
   };
 
