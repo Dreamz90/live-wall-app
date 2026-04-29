@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import frameBg from '../assets/frame-bg.jpg';
 
 function LiveWall() {
   const [posts, setPosts] = useState([]);
@@ -71,7 +72,7 @@ function LiveWall() {
           key={currentPost.id} 
           className="relative h-[70vh] w-full shadow-[0_50px_120px_-30px_rgba(0,0,0,0.3)] rounded-[40px] overflow-hidden animate-zoom-in"
           style={{
-            backgroundImage: "url('./assets/frame-bg.jpg')",
+            backgroundImage: `url(${frameBg})`,
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat'
           }}
