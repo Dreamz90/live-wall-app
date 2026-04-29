@@ -6,6 +6,7 @@ import imageCompression from "browser-image-compression";
 
 function UploadForm() {
   const [message, setMessage] = useState("");
+  const [guestName, setGuestName] = useState(""); // New state for name
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState("");
@@ -29,91 +30,91 @@ function UploadForm() {
     try {
       let downloadURL = "";
 
-      // 1. Only process image if a file is selected
       if (file) {
-        // Image Compression Settings
         const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
+          maxSizeMB: 0.8,
+          maxWidthOrHeight: 1200,
           useWebWorker: true,
         };
-
         const compressedFile = await imageCompression(file, options);
         const storageRef = ref(storage, `images/${Date.now()}_${file.name}`);
-        
-        // Upload to Firebase Storage
         const uploadResult = await uploadBytes(storageRef, compressedFile);
         downloadURL = await getDownloadURL(uploadResult.ref);
       }
 
-      // 2. Add data to Firestore (Works with or without imageUrl)
       await addDoc(collection(db, "posts"), {
         message: message,
-        imageUrl: downloadURL, // Will be empty string if no photo
+        guestName: guestName.trim() || "Well-wisher", // Fallback if empty
+        imageUrl: downloadURL,
         timestamp: serverTimestamp(),
       });
 
-      // 3. Reset Form
       setMessage("");
+      setGuestName(""); // Reset name
       setFile(null);
-      setStatus("Sent successfully! Check the wall.");
+      setStatus("Sent successfully!");
       setTimeout(() => setStatus(""), 3000);
 
     } catch (error) {
       console.error("Error:", error);
-      setStatus("Oops! Something went wrong. Please try again.");
+      setStatus("Oops! Something went wrong.");
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-ceremony-gold/30 mt-10">
-      <h2 className="font-serif text-2xl text-ceremony-green text-center mb-6 uppercase tracking-wider">
+    <div className="max-w-md mx-auto p-8 bg-white/95 rounded-[2rem] shadow-2xl border border-ceremony-gold/20 mt-10">
+      <h2 className="font-serif text-2xl text-ceremony-emerald text-center mb-6 uppercase tracking-widest font-bold">
         Share a Blessing
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Message Input */}
+        {/* Guest Name Field (Optional) */}
         <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">Your Message</label>
+          <input
+            type="text"
+            className="w-full p-4 border-2 border-ceremony-gold/10 rounded-2xl focus:border-ceremony-gold outline-none text-lg"
+            placeholder="Your Name (Optional)"
+            value={guestName}
+            onChange={(e) => setGuestName(e.target.value)}
+          />
+        </div>
+
+        {/* Message Field */}
+        <div>
           <textarea
-            className="w-full p-3 border-2 border-ceremony-gold/20 rounded-lg focus:border-ceremony-gold outline-none transition-all h-32"
-            placeholder="Write your wishes for the baby..."
+            className="w-full p-4 border-2 border-ceremony-gold/10 rounded-2xl focus:border-ceremony-gold outline-none h-32 italic text-lg"
+            placeholder="Write your wishes for Hafsa..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
           />
         </div>
 
-        {/* Photo Input (Optional) */}
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">Upload Photo (Optional)</label>
+        <div className="bg-ceremony-cream/30 p-4 rounded-2xl border border-dashed border-ceremony-gold/30">
+          <label className="block text-xs font-bold text-ceremony-gold uppercase mb-2 tracking-widest text-center">
+            Add a Photo (Optional)
+          </label>
           <input
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-ceremony-gold/10 file:text-ceremony-gold hover:file:bg-ceremony-gold/20 cursor-pointer"
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-ceremony-gold file:text-white hover:file:bg-opacity-90 cursor-pointer"
           />
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={uploading}
-          className={`w-full py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 ${
-            uploading ? "bg-gray-400" : "bg-ceremony-green hover:bg-opacity-90 shadow-lg"
+          className={`w-full py-4 rounded-2xl font-bold text-white transition-all shadow-lg ${
+            uploading ? "bg-gray-400" : "bg-ceremony-emerald hover:shadow-emerald-900/20"
           }`}
         >
-          {uploading ? "Sending..." : "Post to Live Wall"}
+          {uploading ? "Sending..." : "Post Blessing"}
         </button>
 
-        {/* Status Message */}
-        {status && (
-          <p className={`text-center text-sm font-bold mt-4 ${status.includes("Oops") ? "text-red-500" : "text-ceremony-gold"}`}>
-            {status}
-          </p>
-        )}
+        {status && <p className="text-center font-bold text-ceremony-gold animate-pulse">{status}</p>}
       </form>
     </div>
   );
