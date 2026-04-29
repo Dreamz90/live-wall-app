@@ -13,15 +13,16 @@ body {
   padding: 0;
   background-color: var(--ceremony-cream);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  overflow: hidden; /* Important for clean projection */
+  overflow: hidden; /* Keeps the projection screen clean and locked */
 }
 
 /* Typography */
 .font-arabic {
   font-family: "Amiri", "Traditional Arabic", serif;
+  text-rendering: optimizeLegibility;
 }
 
-/* Cinematic Slide Transition */
+/* Cinematic Pop-in Animation for the Featured Post */
 @keyframes zoomInBounce {
   0% {
     opacity: 0;
@@ -37,19 +38,19 @@ body {
   animation: zoomInBounce 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Background Mosaic Styling */
+/* Background Mosaic (Collage) Styling */
 .grayscale {
   filter: grayscale(100%) contrast(80%);
 }
 
-/* Helper Colors */
+/* Helper Colors matching your theme */
 .bg-ceremony-cream { background-color: var(--ceremony-cream); }
 .text-ceremony-emerald { color: var(--ceremony-emerald); }
 .text-ceremony-gold { color: var(--ceremony-gold); }
 .bg-ceremony-emerald { background-color: var(--ceremony-emerald); }
 .text-ceremony-cream { color: var(--ceremony-cream); }
 
-/* Ensure text is readable against the JPEG background */
+/* Backdrop Blur: This makes the text pop over the frame-bg.jpg */
 .backdrop-blur-md {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

@@ -6,7 +6,20 @@ function LiveWall() {
   const [posts, setPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // 1. Listen to Firestore for real-time updates from 250+ guests
+  // 1. Your specific list of different separator strings
+  const separators = [
+    "✨ ✨ ✨ ✨ ✨",
+    "⸜(｡˃ ᵕ ˂ )⸝♡",
+    "✧ ✧ ✧ ✧ ✧",
+    "~❁~❁~❁~❁~",
+    "◈ ◈ ◈ ◈ ◈",
+    "ꕥ ꕥ ꕥ",
+    "(˶ᵔ ᵕ ᵔ˶)",
+    "(˶ᵔᗜᵔ˶)ﾉﾞ",
+    "(๑>◡<๑)",
+    "⸜( ˶>ᴗ<˶)⸝♡"
+  ];
+
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -19,7 +32,6 @@ function LiveWall() {
     return () => unsubscribe();
   }, []);
 
-  // 2. Slideshow Timer: Rotate every 6 seconds for comfortable reading
   useEffect(() => {
     if (posts.length > 0) {
       const interval = setInterval(() => {
@@ -29,21 +41,16 @@ function LiveWall() {
     }
   }, [posts]);
 
-  // Loading state if no posts exist yet
-  if (posts.length === 0) {
-    return (
-      <div className="min-h-screen bg-ceremony-cream flex items-center justify-center">
-        <p className="text-ceremony-gold font-serif text-3xl animate-pulse">Initializing Blessing Wall...</p>
-      </div>
-    );
-  }
+  if (posts.length === 0) return null;
 
   const currentPost = posts[currentIndex];
+  // Logic to cycle through the separator list
+  const selectedSeparator = separators[currentIndex % separators.length];
 
   return (
     <div className="relative min-h-screen w-full bg-ceremony-cream overflow-hidden flex flex-col items-center justify-center">
       
-      {/* BACKGROUND COLLAGE: Fills large projection space to avoid empty gaps */}
+      {/* BACKGROUND COLLAGE */}
       <div className="absolute inset-0 grid grid-cols-6 md:grid-cols-10 gap-2 opacity-10 grayscale pointer-events-none p-2">
         {posts.map((post, i) => (
           <div key={`bg-${i}`} className="h-40 bg-white border border-ceremony-gold/10 overflow-hidden rounded-sm">
@@ -58,7 +65,7 @@ function LiveWall() {
         ))}
       </div>
 
-      {/* HEADER: Arabic Basmala and Event Title */}
+      {/* HEADER */}
       <div className="relative z-30 text-center mb-8">
         <div className="text-ceremony-gold text-5xl md:text-8xl mb-4 font-arabic drop-shadow-md">
           بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
@@ -68,19 +75,19 @@ function LiveWall() {
         </h1>
       </div>
 
-      {/* CENTER STAGE: The Featured Blessing Card */}
+      {/* CENTER STAGE */}
       <div className="relative z-20 w-full max-w-6xl px-6">
         <div 
           key={currentPost.id} 
           className="flex flex-col md:flex-row items-center shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] rounded-[40px] overflow-hidden animate-zoom-in min-h-[60vh]"
           style={{
-            backgroundImage: "url('/frame-bg.jpg')", // Ensure this file is in your /public folder
+            backgroundImage: "url('/frame-bg.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             border: '1px solid rgba(197, 160, 89, 0.3)'
           }}
         >
-          {/* Photo Section: Using object-contain to ensure group photos are NOT cut off */}
+          {/* Photo Section: Restored 45vh and white border-4 */}
           {currentPost.imageUrl && (
             <div className="w-full md:w-1/2 p-8 md:p-12 flex justify-center items-center">
               <div className="w-full h-[45vh] overflow-hidden rounded-3xl shadow-2xl bg-black/5 flex items-center justify-center border-4 border-white/60">
@@ -98,28 +105,25 @@ function LiveWall() {
             <div className="bg-white/40 backdrop-blur-md p-10 rounded-[40px] border border-white/20 shadow-inner w-full">
               <p className="font-serif text-4xl md:text-5xl text-ceremony-emerald leading-snug italic font-medium">
                 {currentPost.message}
-              </p>
-              
-              <div className="mt-10 text-ceremony-gold text-5xl tracking-[0.6em] opacity-40">
-                ~~~~~~
-              </div>
-
-              {/* Conditional Guest Name: Only shows if user provided it */}
+              </p>           
               {currentPost.guestName && (
                 <p className="mt-8 text-ceremony-gold uppercase tracking-[0.3em] font-bold text-sm">
                   — {currentPost.guestName}
                 </p>
               )}
+               {/* Dynamic Separator from your emoticon list */}
+              <div className="mt-10 text-ceremony-gold text-3xl md:text-4xl tracking-widest opacity-80 font-light">
+                {selectedSeparator}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* FOOTER: Static Date for the Event */}
+      {/* FOOTER */}
       <div className="relative z-30 mt-12 bg-ceremony-emerald text-ceremony-cream px-10 py-2 rounded-full font-serif tracking-[0.4em] text-xs uppercase shadow-xl">
         May 17, 2026
       </div>
-
     </div>
   );
 }
