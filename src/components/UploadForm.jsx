@@ -1,87 +1,122 @@
-import React, { useState } from 'react';
-import { db, storage } from '../firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useState } from "react";
+import { db, storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import imageCompression from "browser-image-compression";
 
-const UploadForm = () => {
-  const [message, setMessage] = useState('');
-  const [name, setName] = useState('');
+function UploadForm() {
+  const [message, setMessage] = useState("");
+  const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [status, setStatus] = useState("");
 
-  const handleUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!message.trim()) {
+      setStatus("Please enter a message!");
+      return;
+    }
 
     setUploading(true);
+    setStatus("Sharing your blessings...");
 
     try {
-      // FIX 1: Generate a unique filename using a timestamp
-      // This prevents errors when a user uploads "image.jpg" twice
-      const fileExtension = file.name.split('.').pop();
-      const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExtension}`;
-      const storageRef = ref(storage, `uploads/${uniqueName}`);
+      let downloadURL = "";
 
-      // Upload the file
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
+      // 1. Only process image if a file is selected
+      if (file) {
+        // Image Compression Settings
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
 
-      // Save to Firestore
+        const compressedFile = await imageCompression(file, options);
+        const storageRef = ref(storage, `images/${Date.now()}_${file.name}`);
+        
+        // Upload to Firebase Storage
+        const uploadResult = await uploadBytes(storageRef, compressedFile);
+        downloadURL = await getDownloadURL(uploadResult.ref);
+      }
+
+      // 2. Add data to Firestore (Works with or without imageUrl)
       await addDoc(collection(db, "posts"), {
-        name: name || "Anonymous Guest",
         message: message,
-        imageUrl: downloadURL,
-        createdAt: serverTimestamp()
+        imageUrl: downloadURL, // Will be empty string if no photo
+        timestamp: serverTimestamp(),
       });
 
-      alert("Blessing shared successfully!");
-      setMessage('');
-      setName('');
+      // 3. Reset Form
+      setMessage("");
+      setFile(null);
+      setStatus("Sent successfully! Check the wall.");
+      setTimeout(() => setStatus(""), 3000);
+
     } catch (error) {
-      console.error("Upload failed:", error);
-      alert("Error: " + error.message);
+      console.error("Error:", error);
+      setStatus("Oops! Something went wrong. Please try again.");
     } finally {
       setUploading(false);
-      // FIX 2: Reset the input value so mobile browsers 
-      // trigger 'onChange' again for the next selection
-      e.target.value = null;
     }
   };
 
   return (
-    <div className="p-4 bg-white/10 backdrop-blur-md rounded-lg border border-white/20">
-      <input
-        type="text"
-        placeholder="Your Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="w-full p-2 mb-2 rounded bg-white/50 border-none"
-      />
-      <textarea
-        placeholder="Write a blessing for Hafsa..."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        className="w-full p-2 mb-4 rounded bg-white/50 border-none"
-      />
-      
-      <label className="block">
-        <span className="sr-only">Choose photo</span>
-        <input 
-          type="file" 
-          accept="image/*"
-          onChange={handleUpload}
-          disabled={uploading}
-          className="block w-full text-sm text-gray-500
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-full file:border-0
-            file:text-sm file:font-semibold
-            file:bg-emerald-50 file:text-emerald-700
-            hover:file:bg-emerald-100 disabled:opacity-50"
-        />
-      </label>
+    <div className="max-w-md mx-auto p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl border border-ceremony-gold/30 mt-10">
+      <h2 className="font-serif text-2xl text-ceremony-green text-center mb-6 uppercase tracking-wider">
+        Share a Blessing
+      </h2>
 
-      {uploading && <p className="mt-2 text-emerald-600 animate-pulse">Uploading blessing...</p>}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Message Input */}
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Your Message</label>
+          <textarea
+            className="w-full p-3 border-2 border-ceremony-gold/20 rounded-lg focus:border-ceremony-gold outline-none transition-all h-32"
+            placeholder="Write your wishes for the baby..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* Photo Input (Optional) */}
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Upload Photo (Optional)</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-ceremony-gold/10 file:text-ceremony-gold hover:file:bg-ceremony-gold/20 cursor-pointer"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={uploading}
+          className={`w-full py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 ${
+            uploading ? "bg-gray-400" : "bg-ceremony-green hover:bg-opacity-90 shadow-lg"
+          }`}
+        >
+          {uploading ? "Sending..." : "Post to Live Wall"}
+        </button>
+
+        {/* Status Message */}
+        {status && (
+          <p className={`text-center text-sm font-bold mt-4 ${status.includes("Oops") ? "text-red-500" : "text-ceremony-gold"}`}>
+            {status}
+          </p>
+        )}
+      </form>
     </div>
   );
-};
+}
 
 export default UploadForm;
