@@ -1,4 +1,41 @@
-node_modules
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Firebase
+.firebase/
+firebug.log*
+firebase-debug.log*
+ui-debug.log*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Environment Variables (CRITICAL for hiding API keys)
 .env
-dist
-build
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite
+*.timestamp-*
