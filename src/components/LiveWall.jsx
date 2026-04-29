@@ -89,17 +89,12 @@ function LiveWall() {
           {/* Message Section */}
           <div className={`p-12 text-center flex flex-col items-center justify-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full'}`}>
             <div className="bg-white/50 backdrop-blur-md p-10 rounded-[30px] border border-white/30 shadow-sm">
-              <p className="font-serif text-4xl md:text-5xl text-ceremony-emerald leading-tight italic font-medium"><div className="mt-10 text-ceremony-gold text-5xl tracking-[0.5em] opacity-50">
-                "
-              </div>
+              <p className="font-serif text-4xl md:text-5xl text-ceremony-emerald leading-tight italic font-medium">
                 {currentPost.message}
                 <div className="mt-10 text-ceremony-gold text-5xl tracking-[0.5em] opacity-50">
-                "
+                (^‿^)
               </div>
               </p>
-              <div className="mt-10 text-ceremony-gold text-5xl tracking-[0.5em] opacity-50">
-                ***
-              </div>
               {currentPost.guestName && (
                 <p className="mt-8 text-ceremony-gold uppercase tracking-[0.2em] font-bold text-sm">
                   — {currentPost.guestName}
