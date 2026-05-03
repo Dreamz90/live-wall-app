@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { db, storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import imageCompression from "browser-image-compression";
 
 function UploadForm() {
+  const [name, setName] = useState(""); // 1. Added name state
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState("");
   
+  // 2. Added ref for file input reset
+  const fileInputRef = useRef(null);
+
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
@@ -29,9 +33,7 @@ function UploadForm() {
     try {
       let downloadURL = "";
 
-      // 1. Only process image if a file is selected
       if (file) {
-        // Image Compression Settings
         const options = {
           maxSizeMB: 1,
           maxWidthOrHeight: 1920,
@@ -39,32 +41,35 @@ function UploadForm() {
         };
 
         const compressedFile = await imageCompression(file, options);
+        // Unique filename fix
         const storageRef = ref(storage, `images/${Date.now()}_${file.name}`);
         
-        // Upload to Firebase Storage
         const uploadResult = await uploadBytes(storageRef, compressedFile);
         downloadURL = await getDownloadURL(uploadResult.ref);
       }
 
-      // 2. Add data to Firestore (Works with or without imageUrl)
+      // 3. Save to Firestore with Name logic
       await addDoc(collection(db, "posts"), {
+        name: name.trim() === "" ? "Well-wisher" : name.trim(), // Default to Well-wisher
         message: message,
-        imageUrl: downloadURL, // Will be empty string if no photo
+        imageUrl: downloadURL,
         timestamp: serverTimestamp(),
       });
 
-      // 3. Reset Form
+      // 4. Reset Form
+      setName("");
       setMessage("");
       setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = ""; // Clear file input
+      
       setStatus("Sent successfully! Check the wall.");
       setTimeout(() => setStatus(""), 3000);
 
     } catch (error) {
       console.error("Error:", error);
-      setStatus("Oops! Something went wrong. Please try again."  + error.message);
+      setStatus("Oops! Something went wrong. " + error.message);
     } finally {
       setUploading(false);
-      e.target.value = null;
     }
   };
 
@@ -75,6 +80,7 @@ function UploadForm() {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name Input */}
         {/* Message Input */}
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">Your Message</label>
@@ -93,12 +99,23 @@ function UploadForm() {
           <input
             type="file"
             accept="image/*"
+            ref={fileInputRef} // Attached ref
             onChange={handleFileChange}
             className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-ceremony-gold/10 file:text-ceremony-gold hover:file:bg-ceremony-gold/20 cursor-pointer"
           />
         </div>
 
-        {/* Submit Button */}
+        <div>
+          <label className="block text-sm font-bold text-gray-700 mb-1">Your Name (Optional)</label>
+          <input
+            type="text"
+            className="w-full p-3 border-2 border-ceremony-gold/20 rounded-lg focus:border-ceremony-gold outline-none transition-all"
+            placeholder="Enter your name..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
         <button
           type="submit"
           disabled={uploading}
@@ -109,7 +126,6 @@ function UploadForm() {
           {uploading ? "Sending..." : "Post to Live Wall"}
         </button>
 
-        {/* Status Message */}
         {status && (
           <p className={`text-center text-sm font-bold mt-4 ${status.includes("Oops") ? "text-red-500" : "text-ceremony-gold"}`}>
             {status}
