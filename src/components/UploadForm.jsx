@@ -10,7 +10,8 @@ function UploadForm() {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState("");
-  
+  const MAX_LIMIT = 150;
+
   // 2. Added ref for file input reset
   const fileInputRef = useRef(null);
 
@@ -88,9 +89,19 @@ function UploadForm() {
             className="w-full p-3 border-2 border-ceremony-gold/20 rounded-lg focus:border-ceremony-gold outline-none transition-all h-32"
             placeholder="Write your wishes for the baby..."
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            //onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              // This ensures the state update never exceeds 100
+              if (e.target.value.length <= MAX_LIMIT) {
+                setMessage(e.target.value);
+              }
+            }}
+            maxLength={MAX_LIMIT}
             required
           />
+          <div className={`w-full text-right text-sm font-bold ${message.length === MAX_LIMIT ? 'text-red-500' : 'text-emerald-600'}`}>
+  {message.length} / {MAX_LIMIT}
+</div>
         </div>
 
         {/* Photo Input (Optional) */}
