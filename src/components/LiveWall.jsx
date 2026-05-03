@@ -95,7 +95,7 @@ function LiveWall() {
 
             {/* Message Section */}
             <div className={`flex flex-col items-center justify-center p-6 text-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full h-full'}`}>
-              <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[30px] border border-white/20 w-full max-h-full overflow-y-auto">
+              <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[30px] border border-white/20 w-full h-fit max-h-[80%] overflow-y-auto">
                 <p className="font-serif text-3xl md:text-4xl text-ceremony-emerald italic leading-snug">
                   {currentPost.message}
                 </p>
