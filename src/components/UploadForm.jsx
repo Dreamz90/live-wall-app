@@ -91,7 +91,7 @@ function UploadForm() {
             value={message}
             //onChange={(e) => setMessage(e.target.value)}
             onChange={(e) => {
-              // This ensures the state update never exceeds 100
+              // This ensures the state update never exceeds 150
               if (e.target.value.length <= MAX_LIMIT) {
                 setMessage(e.target.value);
               }

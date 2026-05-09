@@ -116,7 +116,7 @@ function LiveWall() {
         </div>
       </div>
 
-      {/* FOOTER */}
+      {/* FOOTER -  showing date*/}
       <div className="relative z-30 mt-8 bg-ceremony-emerald text-ceremony-cream px-8 py-2 rounded-full font-serif tracking-[0.3em] text-[30px] uppercase shadow-xl">
         May 17, 2026
       </div>
