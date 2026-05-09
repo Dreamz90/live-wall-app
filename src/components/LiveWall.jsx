@@ -38,14 +38,14 @@ function LiveWall() {
   const currentPost = posts[currentIndex];
   const selectedSeparator = separators[currentIndex % separators.length];
 
-  // Dynamic calculation for Shrink-to-Fill logic
+  // Shrink-to-Fill background calculation
   const gridDimension = Math.ceil(Math.sqrt(posts.length));
   const cellSize = 100 / gridDimension;
 
   return (
-    <div className="relative h-screen w-screen bg-ceremony-cream overflow-hidden flex flex-col items-center justify-between p-[4vh]">
+    <div className="relative h-screen w-screen bg-ceremony-cream overflow-hidden flex flex-col items-center justify-between py-[1vh] px-[4vw]">
       
-      {/* BACKGROUND COLLAGE - Universal Scaling */}
+      {/* BACKGROUND COLLAGE */}
       <div className="absolute inset-0 flex flex-wrap opacity-15 grayscale pointer-events-none overflow-hidden">
         {posts.map((post, i) => (
           <div 
@@ -69,66 +69,69 @@ function LiveWall() {
         ))}
       </div>
 
-      {/* HEADER - Scaled with vh */}
-      <div className="relative z-30 text-center">
-        <div className="text-ceremony-gold text-[8vh] mb-[0.5vh] font-arabic drop-shadow-md">
+      {/* HEADER - Tucked higher */}
+      <div className="relative z-30 text-center -mt-[1vh]">
+        <div className="text-ceremony-gold text-[8vh] mb-[0.2vh] font-arabic drop-shadow-md">
           بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
         </div>
-        <h1 className="font-serif text-[4.5vh] text-ceremony-emerald tracking-tight bg-white/70 backdrop-blur-md px-[4vw] py-[1vh] rounded-full shadow-sm">
+        <h1 className="font-serif text-[4.5vh] text-ceremony-emerald tracking-tight bg-white/70 backdrop-blur-md px-[4vw] py-[0.5vh] rounded-full shadow-sm">
           My Little Angel's Naming Ceremony
         </h1>
       </div>
 
-      {/* CENTER STAGE - Adaptive sizing */}
-      <div className="relative z-20 w-full max-w-[85vw] px-[2vw]">
+      {/* CENTER STAGE - Natural Content Flow */}
+      <div className="relative z-20 w-full max-w-[92vw] flex-grow flex items-center justify-center">
         <div 
           key={currentPost.id} 
-          className="relative h-[62vh] w-full shadow-[0_4vh_10vh_-3vh_rgba(0,0,0,0.4)] rounded-[5vh] overflow-hidden animate-zoom-in"
+          className="relative h-[70vh] w-full shadow-[0_4vh_10vh_-3vh_rgba(0,0,0,0.4)] rounded-[5vh] overflow-hidden animate-zoom-in"
           style={{
             backgroundImage: `url(${frameBg})`,
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 flex flex-col md:flex-row items-center p-[5vh]">
+          {/* Main Content Row: Natural side-by-side occupancy */}
+          <div className="absolute inset-0 flex flex-row items-center justify-center p-[8vh] gap-[4vw]">
             
-            {/* Photo Section */}
+            {/* Image Container: Flex-shrink-0 keeps it from getting squashed */}
             {currentPost.imageUrl && (
-              <div className="w-full md:w-1/3 h-full flex justify-center items-center">
-                <div className="w-fit h-fit max-h-[85%] overflow-hidden rounded-[3vh] shadow-xl border-[0.6vh] border-white/80">
+              <div className="flex-shrink-0 h-full max-h-[95%] max-w-[34%] flex items-center justify-center">
+                <div className="h-full w-auto aspect-auto overflow-hidden rounded-[3vh] shadow-2xl border-[0.6vh] border-white/90 bg-white/5">
                   <img 
                     src={currentPost.imageUrl} 
-                    className="max-h-[48vh] w-auto h-auto block object-contain" 
+                    className="h-full w-auto object-contain block" 
                     alt="Guest"
                   />
                 </div>
               </div>
             )}
 
-            {/* Message Section */}
-            <div className={`flex flex-col items-center justify-center text-center p-[2vh] ${currentPost.imageUrl ? 'md:w-2/3' : 'w-full h-full'}`}>
-              <div className="p-[4vh] rounded-[4vh] border border-white/20 w-full h-fit max-h-[80%] flex flex-col justify-center">
-                <p className="font-serif text-[4.5vh] text-stone-700 italic leading-tight break-words">
+            {/* Message Container: Transparent, flex-1 fills remaining space naturally */}
+            <div className="flex-1 h-full flex flex-col items-center justify-center text-center">
+              <div className="max-w-[95%] flex flex-col justify-center space-y-[4vh]">
+                <p className="font-serif text-[5.5vh] text-stone-800 italic leading-tight break-words drop-shadow-sm">
                   "{currentPost.message}"
                 </p>
                 
                 {currentPost.name && (
-                  <p className="mt-[2vh] text-ceremony-gold uppercase tracking-widest font-bold text-[3vh]">
-                    — {currentPost.name}
-                  </p>
+                  <div className="flex flex-col items-center">
+                    <p className="text-ceremony-gold uppercase tracking-[0.2em] font-bold text-[3.2vh] drop-shadow-sm">
+                      — {currentPost.name}
+                    </p>
+                    <div className="mt-[2vh] text-amber-600 text-[5vh] tracking-widest opacity-80">
+                      {selectedSeparator}
+                    </div>
+                  </div>
                 )}
-
-                <div className="mt-[3vh] text-amber-600 text-[3vh] tracking-widest opacity-80">
-                  {selectedSeparator}
-                </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
 
-      {/* FOOTER - Scaled with vh */}
-      <div className="relative z-30 bg-ceremony-emerald text-ceremony-cream px-[5vw] py-[1.5vh] rounded-full font-serif tracking-[0.3em] text-[2.8vh] uppercase shadow-2xl mb-[1vh]">
+      {/* FOOTER - Tucked lower */}
+      <div className="relative z-30 bg-ceremony-emerald text-ceremony-cream px-[5vw] py-[1vh] rounded-full font-serif tracking-[0.3em] text-[2.8vh] uppercase shadow-2xl -mb-[0.5vh]">
         May 17, 2026
       </div>
     </div>
