@@ -8,9 +8,9 @@ function LiveWall() {
   const [currentIndex, setCurrentIndex] = useState(0);
 //keyboards icons
   const separators = [
-    "┈━═☆ ☾ ☆═━┈","✨ ✨ ✨ ✨ ✨", "⸜(｡˃ ᵕ ˂ )⸝♡","❀⊱┄┄┄┄┄⊰❀", "✧ ✧ ✧ ✧ ✧","(づ◕‿◕)づ", "~❁~❁~❁~❁~","(ദ്ദി˙ᗜ˙)","(·❛ ֊ ❛)",
+    "┈━═☆ ☾ ☆═━┈","✨ ✨ ✨ ✨ ✨", "⸜(｡˃ ᵕ ˂ )⸝♡","❀⊱┄┄┄┄┄┄┄┄┄┄┄⊰❀", "✧ ✧ ✧ ✧ ✧","(づ◕‿◕)づ", "~❁~❁~❁~❁~","(ദ്ദി˙ᗜ˙)","(·❛ ֊ ❛)",
     "◈ ◈ ◈ ◈ ◈", "ꕥ ꕥ ꕥ", "(˶ᵔ ᵕ ᵔ˶)", "(˶ᵔᗜᵔ˶)ﾉﾞ","ദ്ദി(˵•̀ ᴗ - ˵)✧","⚜ • ⚜ • ⚜","🍼 ✨ 🍼 ✨ 🍼",
-    "(๑>◡<๑)", "⸜( ˶>ᴗ<˶)⸝♡","(◠‿◠)","（＾◡＾）♡","❃°•°❀°•°❃","── ⋆⋅☆⋅⋆ ──"
+    "(๑>◡<๑)", "⸜( ˶>ᴗ<˶)⸝♡","(◠‿◠)","（＾◡＾）♡"
   ];
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function LiveWall() {
   const selectedSeparator = separators[currentIndex % separators.length];
 
   return (
-    <div className="relative min-h-screen w-full bg-ceremony-cream overflow-hidden flex flex-col items-center justify-center">
+    <div className="relative min-h-screen h-screen w-screen bg-ceremony-cream overflow-hidden flex flex-col items-center justify-center">
       
       {/* BACKGROUND COLLAGE */}
       <div className="absolute inset-0 grid grid-cols-6 md:grid-cols-10 gap-2 opacity-10 grayscale pointer-events-none p-2">
@@ -48,7 +48,7 @@ function LiveWall() {
             {post.imageUrl ? (
               <img src={post.imageUrl} className="w-full h-full object-cover" alt="" />
             ) : (
-              <div className="p-2 text-[10px] font-serif text-ceremony-emerald italic leading-tight">
+              <div className="p-2 text-[20px] font-serif text-ceremony-emerald italic leading-tight">
                 {post.message}
               </div>
             )}
@@ -58,16 +58,16 @@ function LiveWall() {
 
       {/* HEADER */}
       <div className="relative z-30 text-center mb-6">
-        <div className="text-ceremony-gold text-5xl md:text-7xl mb-2 font-arabic drop-shadow-md">
+        <div className="text-ceremony-gold text-7xl md:text-9xl mb-2 font-arabic drop-shadow-md">
           بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
         </div>
-        <h1 className="font-serif text-2xl md:text-5xl text-ceremony-emerald tracking-tight bg-white/60 backdrop-blur-sm px-8 py-2 rounded-full inline-block">
-          Hafsa Tasnim's Naming Ceremony
+        <h1 className="font-serif text-7xl md:text-8xl text-ceremony-emerald tracking-tight bg-white/60 backdrop-blur-sm px-8 py-2 rounded-full inline-block">
+          My Little Angel's Naming Ceremony
         </h1>
       </div>
 
       {/* CENTER STAGE */}
-      <div className="relative z-20 w-full max-w-screen-xl px-4">
+      <div className="relative z-20 w-full max-w-[85vw] px-2">
         <div 
           key={currentPost.id} 
           className="relative h-[70vh] w-full shadow-[0_50px_120px_-30px_rgba(0,0,0,0.3)] rounded-[40px] overflow-hidden animate-zoom-in"
@@ -77,7 +77,7 @@ function LiveWall() {
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 flex flex-col md:flex-row items-center p-8 md:p-12">
+          <div className="absolute inset-0 flex flex-col md:flex-row items-center p-4 md:p-10">
             
             {/* Adaptive Photo Section */}
             {currentPost.imageUrl && (
@@ -95,19 +95,19 @@ function LiveWall() {
 
             {/* Message Section */}
             <div className={`flex flex-col items-center justify-center p-6 text-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full h-full'}`}>
-              <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[30px] border border-white/20 w-full max-h-full overflow-y-auto">
-                <p className="font-serif text-3xl md:text-4xl text-ceremony-emerald italic leading-snug">
+              <div className="bg-white/40 backdrop-blur-sm p-8 rounded-[30px] border border-white/20 w-full h-fit max-h-[80%] overflow-y-auto">
+                <p className="font-serif text-5xl md:text-6xl text-stone-500 italic leading-snug text-center">
                   {currentPost.message}
                 </p>
                 
                 {currentPost.name && (
-                  <p className="mt-4 text-ceremony-gold uppercase tracking-widest font-bold text-xs md:text-sm">
+                  <p className="mt-4 text-ceremony-gold uppercase tracking-widest font-bold text-[35px]">
                     — {currentPost.name}
                   </p>
                 )}
 
                 {/* Separator placed after message/name */}
-                <div className="mt-10 text-ceremony-gold text-3xl md:text-4xl tracking-widest opacity-80 font-light">
+                <div className="mt-8 text-amber-500 text-5xl md:text-6xl tracking-widest opacity-80 font-light">
                   {selectedSeparator}
                 </div>
               </div>
@@ -116,8 +116,8 @@ function LiveWall() {
         </div>
       </div>
 
-      {/* FOOTER */}
-      <div className="relative z-30 mt-8 bg-ceremony-emerald text-ceremony-cream px-8 py-2 rounded-full font-serif tracking-[0.3em] text-[14px] uppercase shadow-xl">
+      {/* FOOTER -  showing date*/}
+      <div className="relative z-30 mt-8 bg-ceremony-emerald text-ceremony-cream px-8 py-2 rounded-full font-serif tracking-[0.3em] text-[30px] uppercase shadow-xl">
         May 17, 2026
       </div>
     </div>
