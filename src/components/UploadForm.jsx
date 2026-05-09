@@ -123,7 +123,13 @@ function UploadForm() {
             className="w-full p-3 border-2 border-ceremony-gold/20 rounded-lg focus:border-ceremony-gold outline-none transition-all"
             placeholder="Enter your name..."
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            maxLength={30}
+            onChange={(e) => {
+      // Functional restriction to prevent pasting longer strings
+      if (e.target.value.length <= 30) {
+        setName(e.target.value);
+      }
+    }}
           />
         </div>
 

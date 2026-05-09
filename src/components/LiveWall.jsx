@@ -108,7 +108,7 @@ function LiveWall() {
 
             {/* Message Container: Transparent, flex-1 fills remaining space naturally */}
             <div className="flex-1 h-full flex flex-col items-center justify-center text-center">
-              <div className="max-w-[95%] flex flex-col justify-center space-y-[4vh]">
+              <div className="max-w-[95%] flex flex-col justify-center space-y-[3vh]">
                 <p className="font-serif text-[5.5vh] text-stone-800 italic leading-tight break-words drop-shadow-sm">
                   "{currentPost.message}"
                 </p>
@@ -118,7 +118,7 @@ function LiveWall() {
                     <p className="text-ceremony-gold uppercase tracking-[0.2em] font-bold text-[3.2vh] drop-shadow-sm">
                       — {currentPost.name}
                     </p>
-                    <div className="mt-[2vh] text-amber-600 text-[5vh] tracking-widest opacity-80">
+                    <div className="mt-[1.5vh] text-amber-600 text-[5vh] tracking-widest opacity-80">
                       {selectedSeparator}
                     </div>
                   </div>
