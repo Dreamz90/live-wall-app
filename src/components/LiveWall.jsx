@@ -44,7 +44,7 @@ function LiveWall() {
       {/* BACKGROUND COLLAGE */}
       <div className="absolute inset-0 grid grid-cols-6 md:grid-cols-10 gap-2 opacity-10 grayscale pointer-events-none p-2">
         {posts.map((post, i) => (
-          <div key={`bg-${i}`} className="h-40 bg-white border border-ceremony-gold/10 overflow-hidden rounded-sm">
+          <div key={`bg-${i}`} className="bg-white border border-ceremony-gold/10 overflow-hidden rounded-sm">
             {post.imageUrl ? (
               <img src={post.imageUrl} className="w-full h-full object-cover" alt="" />
             ) : (
