@@ -131,7 +131,7 @@ function LiveWall() {
       </div>
 
       {/* FOOTER - Tucked lower */}
-      <div className="relative z-30 bg-ceremony-emerald text-ceremony-cream px-[5vw] py-[1vh] rounded-full font-serif tracking-[0.3em] text-[2.8vh] uppercase shadow-2xl -mb-[0.5vh]">
+      <div className="relative z-30 bg-ceremony-emerald text-ceremony-cream px-[5vw] py-[1vh] rounded-full font-serif tracking-[0.3em] text-[2.8vh] uppercase shadow-2xl mb-[0.5vh]">
         May 17, 2026
       </div>
     </div>
