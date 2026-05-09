@@ -100,9 +100,9 @@ function LiveWall() {
                   {currentPost.message}
                 </p>
                 
-                {currentPost.guestName && (
+                {currentPost.name && (
                   <p className="mt-4 text-ceremony-gold uppercase tracking-widest font-bold text-xs md:text-sm">
-                    — {currentPost.guestName}
+                    — {currentPost.name}
                   </p>
                 )}
 
