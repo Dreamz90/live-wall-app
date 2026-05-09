@@ -43,67 +43,62 @@ function LiveWall() {
   const cellSize = 100 / gridDimension;
 
   return (
-    <div className="relative min-h-screen h-screen w-screen bg-ceremony-cream overflow-hidden flex flex-col items-center justify-center p-10">
+    <div className="relative h-screen w-screen bg-ceremony-cream overflow-hidden flex flex-col items-center justify-between p-[4vh]">
       
-      {/* BACKGROUND COLLAGE - Dynamic Shrink to Fill */}
+      {/* BACKGROUND COLLAGE - Universal Scaling */}
       <div className="absolute inset-0 flex flex-wrap opacity-15 grayscale pointer-events-none overflow-hidden">
         {posts.map((post, i) => (
           <div 
             key={`bg-${i}`} 
-            className="flex-grow border-[0.5px] border-white/20 overflow-hidden"
+            className="flex-grow border-[0.1vh] border-white/20 overflow-hidden"
             style={{
-              // These dynamic values ensure images fill the screen and shrink as count increases
               flexBasis: `${cellSize}%`,
               height: `${cellSize}%`,
-              minWidth: '50px',
-              minHeight: '50px'
+              minWidth: '2vw',
+              minHeight: '2vh'
             }}
           >
             {post.imageUrl ? (
-              <img 
-                src={post.imageUrl} 
-                className="w-full h-full object-cover" 
-                alt="" 
-              />
+              <img src={post.imageUrl} className="w-full h-full object-cover" alt="" />
             ) : (
-              <div className="w-full h-full p-2 bg-white/50 flex items-center justify-center text-center text-[10px] font-serif text-ceremony-emerald italic leading-tight break-words">
-                {post.message.substring(0, 30)}...
+              <div className="w-full h-full p-[0.5vh] bg-white/50 flex items-center justify-center text-center text-[1vh] font-serif text-ceremony-emerald italic overflow-hidden">
+                {post.message.substring(0, 20)}
               </div>
             )}
           </div>
         ))}
       </div>
 
-      {/* HEADER */}
-      <div className="relative z-30 text-center mb-6">
-        <div className="text-ceremony-gold text-7xl md:text-8xl mb-2 font-arabic drop-shadow-md">
+      {/* HEADER - Scaled with vh */}
+      <div className="relative z-30 text-center">
+        <div className="text-ceremony-gold text-[8vh] mb-[0.5vh] font-arabic drop-shadow-md">
           بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
         </div>
-        <h1 className="font-serif text-6xl md:text-7xl text-ceremony-emerald tracking-tight bg-white/70 backdrop-blur-md px-10 py-2 rounded-full inline-block shadow-sm">
+        <h1 className="font-serif text-[4.5vh] text-ceremony-emerald tracking-tight bg-white/70 backdrop-blur-md px-[4vw] py-[1vh] rounded-full shadow-sm">
           My Little Angel's Naming Ceremony
         </h1>
       </div>
 
-      {/* CENTER STAGE */}
-      <div className="relative z-20 w-full max-w-[85vw] px-2">
+      {/* CENTER STAGE - Adaptive sizing */}
+      <div className="relative z-20 w-full max-w-[85vw] px-[2vw]">
         <div 
           key={currentPost.id} 
-          className="relative h-[65vh] w-full shadow-[0_50px_120px_-30px_rgba(0,0,0,0.4)] rounded-[40px] overflow-hidden animate-zoom-in"
+          className="relative h-[62vh] w-full shadow-[0_4vh_10vh_-3vh_rgba(0,0,0,0.4)] rounded-[5vh] overflow-hidden animate-zoom-in"
           style={{
             backgroundImage: `url(${frameBg})`,
             backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 flex flex-col md:flex-row items-center p-6 md:p-12">
+          <div className="absolute inset-0 flex flex-col md:flex-row items-center p-[5vh]">
             
             {/* Photo Section */}
             {currentPost.imageUrl && (
-              <div className="w-full md:w-1/2 h-full flex justify-center items-center p-4">
-                <div className="w-fit h-fit max-h-[85%] overflow-hidden rounded-2xl shadow-xl border-4 border-white/80">
+              <div className="w-full md:w-1/3 h-full flex justify-center items-center">
+                <div className="w-fit h-fit max-h-[85%] overflow-hidden rounded-[3vh] shadow-xl border-[0.6vh] border-white/80">
                   <img 
                     src={currentPost.imageUrl} 
-                    className="max-h-[50vh] w-auto h-auto block object-contain" 
+                    className="max-h-[48vh] w-auto h-auto block object-contain" 
                     alt="Guest"
                   />
                 </div>
@@ -111,19 +106,19 @@ function LiveWall() {
             )}
 
             {/* Message Section */}
-            <div className={`flex flex-col items-center justify-center p-6 text-center ${currentPost.imageUrl ? 'md:w-1/2' : 'w-full h-full'}`}>
-              <div className="bg-white/50 backdrop-blur-lg p-8 rounded-[30px] border border-white/20 w-full h-fit max-h-[90%] overflow-hidden flex flex-col justify-center">
-                <p className="font-serif text-5xl md:text-6xl text-stone-700 italic leading-snug break-words">
+            <div className={`flex flex-col items-center justify-center text-center p-[2vh] ${currentPost.imageUrl ? 'md:w-2/3' : 'w-full h-full'}`}>
+              <div className="p-[4vh] rounded-[4vh] border border-white/20 w-full h-fit max-h-[80%] flex flex-col justify-center">
+                <p className="font-serif text-[4.5vh] text-stone-700 italic leading-tight break-words">
                   "{currentPost.message}"
                 </p>
                 
                 {currentPost.name && (
-                  <p className="mt-6 text-ceremony-gold uppercase tracking-widest font-bold text-[35px] md:text-[45px]">
+                  <p className="mt-[2vh] text-ceremony-gold uppercase tracking-widest font-bold text-[3vh]">
                     — {currentPost.name}
                   </p>
                 )}
 
-                <div className="mt-8 text-amber-600 text-6xl md:text-7xl tracking-widest opacity-80 font-light">
+                <div className="mt-[3vh] text-amber-600 text-[3vh] tracking-widest opacity-80">
                   {selectedSeparator}
                 </div>
               </div>
@@ -132,8 +127,8 @@ function LiveWall() {
         </div>
       </div>
 
-      {/* FOOTER */}
-      <div className="relative z-30 mt-8 bg-ceremony-emerald text-ceremony-cream px-10 py-3 rounded-full font-serif tracking-[0.3em] text-[28px] uppercase shadow-2xl">
+      {/* FOOTER - Scaled with vh */}
+      <div className="relative z-30 bg-ceremony-emerald text-ceremony-cream px-[5vw] py-[1.5vh] rounded-full font-serif tracking-[0.3em] text-[2.8vh] uppercase shadow-2xl mb-[1vh]">
         May 17, 2026
       </div>
     </div>
