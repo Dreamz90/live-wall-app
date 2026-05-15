@@ -13,6 +13,7 @@ function LiveWall() {
     "(๑>◡<๑)", "⸜( ˶>ᴗ<˶)⸝♡","(◠‿◠)","（＾◡＾）♡"
   ];
 
+  // 1. Live Sync with Firestore
   useEffect(() => {
     const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -24,6 +25,22 @@ function LiveWall() {
     return () => unsubscribe();
   }, []);
 
+  // 2. BACKGROUND IMAGE PRE-FETCH ENGINE (Eliminates LED display lag)
+  useEffect(() => {
+    if (posts.length > 1) {
+      // Calculate what the next index will be
+      const nextIndex = (currentIndex + 1) % posts.length;
+      const nextPost = posts[nextIndex];
+
+      // If the upcoming post has an image, load it into browser cache silently
+      if (nextPost && nextPost.imageUrl) {
+        const imgCache = new Image();
+        imgCache.src = nextPost.imageUrl;
+      }
+    }
+  }, [currentIndex, posts]);
+
+  // 3. Slideshow Rotation Timer
   useEffect(() => {
     if (posts.length > 0) {
       const interval = setInterval(() => {
