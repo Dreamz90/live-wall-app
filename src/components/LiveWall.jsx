@@ -92,7 +92,7 @@ function LiveWall() {
           بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
         </div>
         <h1 className="font-serif text-[4.5vh] text-ceremony-emerald tracking-tight bg-white/70 backdrop-blur-md px-[4vw] py-[0.5vh] rounded-full shadow-sm">
-          My Little Angel's Naming Ceremony
+          Our Little Angel’s Naming Ceremony
         </h1>
       </div>
 
